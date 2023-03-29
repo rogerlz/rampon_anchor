@@ -31,16 +31,16 @@ To compile the project, you will need a Rust toolchain installed, `cargo-binutil
 
 ```
 % rustup component add llvm-tools-preview
-% rustup target add thumbv7em-none-eabihf
+% rustup target add thumbv6m-none-eabi
 ```
 
 To build the project run:
 
 ```
-% cargo build --release
+% cargo build --release --target thumbv6m-none-eabi
 ```
 
-To flash the rp2040, run:
+To flash an RP2040 connected over USB in bootloader mode, run:
 
 ```
 % sudo elf2uf2-rs -d target/thumbv6m-none-eabi/release/rampon_anchor
