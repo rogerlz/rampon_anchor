@@ -27,7 +27,7 @@ probe_points: 90, 90, 20
 
 ## Building Firmware
 
-To compile the project, you will need a Rust toolchain installed, `cargo-binutils`, and the compile target for ARM Cortex-M4F. They can be installed with:
+To compile the project, you will need a Rust toolchain installed, `cargo-binutils`, and the compile target for ARM Cortex-M0. They can be installed with:
 
 ```
 % rustup component add llvm-tools-preview
