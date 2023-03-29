@@ -5,13 +5,13 @@
 - TODO
 
 After flashing completes, the device should be available as:
-`/dev/serial/by-id/usb-Anchor_rampon_anchor_static-if00`.
+`/dev/serial/by-id/usb-Anchor_Rampon-if00`.
 
 ## Klipper Config
 
 ```ini
 [mcu rampon]
-serial: /dev/serial/by-id/usb-Anchor_rampon_anchor_static-if00
+serial: /dev/serial/by-id/usb-Anchor_Rampon-if00
 
 [adxl345]
 cs_pin: rampon:CS
@@ -47,4 +47,4 @@ To flash an RP2040 connected over USB in bootloader mode, run:
 ```
 
 After the update completes, the device should be available as:
-`/dev/serial/by-id/usb-Anchor_rampon_anchor_static-if00`.
+`/dev/serial/by-id/usb-Anchor_Rampon-if00`.

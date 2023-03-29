@@ -84,8 +84,7 @@ fn main() -> ! {
     let mut bus = UsbDeviceBuilder::new(&usb_allocator, UsbVidPid(0x1d50, 0x614e))
         .composite_with_iads()
         .manufacturer("Anchor")
-        .product("rampon_anchor")
-        .serial_number("static")
+        .product("Rampon")
         .device_class(USB_CLASS_CDC)
         .build();
 
