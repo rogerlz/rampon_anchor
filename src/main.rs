@@ -21,7 +21,7 @@ use embedded_hal::spi::MODE_3;
 
 use rp2040_hal::{
     gpio::{bank0::Gpio1, FunctionSpi, Output, Pin, Pins, PushPull},
-    spi::{Enabled, Spi},
+    spi::{Enabled, Spi}, Clock,
 };
 
 use usb_device::{class_prelude::UsbBusAllocator, prelude::*};
@@ -95,12 +95,12 @@ fn main() -> ! {
     // SPI
     let _spi_sclk = pins.gpio2.into_mode::<FunctionSpi>();
     let _spi_mosi = pins.gpio3.into_mode::<FunctionSpi>();
-    let _spi_miso = pins.gpio4.into_mode::<FunctionSpi>();
+    let _spi_miso = pins.gpio0.into_mode::<FunctionSpi>();
     let spi_cs = pins.gpio1.into_push_pull_output();
 
     let spi = Spi::<_, _, 8>::new(pac.SPI0).init(
         &mut pac.RESETS,
-        &clocks.peripheral_clock,
+        clocks.peripheral_clock.freq(),
         8.MHz(),
         &MODE_3,
     );
@@ -149,3 +149,15 @@ const MCU: &str = "rampon_anchor";
 
 #[klipper_constant]
 const STATS_SUMSQ_BASE: u32 = 256;
+
+klipper_enumeration!(
+    enum spi_bus {
+        spi0,
+    }
+);
+
+klipper_enumeration!(
+    enum pin {
+        CS,
+    }
+);

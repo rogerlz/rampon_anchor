@@ -1,33 +1,50 @@
-# Anchor rp2040 demo
+# Rampon Anchor Firmware
 
-This project contains a small example of integrating Anchor in an rp2040 based
-project, in this example for the Pico board.
+## Loading Release Builds
 
-To compile the project, you need a Rust toolchain and the `elf2uf2-rs` utility.
-This can be installed by running `cargo install elf2uf2-rs`.
+- TODO
 
-To test the project, mount a Pico in BOOTSEL mode and run:
+After flashing completes, the device should be available as:
+`/dev/serial/by-id/usb-Anchor_rampon_anchor_static-if00`.
+
+## Klipper Config
+
+```ini
+[mcu rampon]
+serial: /dev/serial/by-id/usb-Anchor_rampon_anchor_static-if00
+
+[adxl345]
+cs_pin: rampon:CS
+
+[resonance_tester]
+accel_chip: adxl345
+probe_points: 90, 90, 20
 ```
-% cargo build --release --target thumbv6m-none-eabi
+
+## Developers
+
+---
+
+## Building Firmware
+
+To compile the project, you will need a Rust toolchain installed, `cargo-binutils`, and the compile target for ARM Cortex-M4F. They can be installed with:
+
+```
+% rustup component add llvm-tools-preview
+% rustup target add thumbv7em-none-eabihf
+```
+
+To build the project run:
+
+```
+% cargo build --release
+```
+
+To flash the rp2040, run:
+
+```
 % sudo elf2uf2-rs -d target/thumbv6m-none-eabi/release/rampon_anchor
 ```
 
-This will flash the pico and run the project. The device should reboot and
-present a serial device, usually found at
-`/dev/serial/by-id/usb-Anchor_rampon_anchor_static-if00`. To have Klippy
-communicate with the device, a very basic config like the following can be used:
-
-```ini
-[mcu]
-serial: /dev/serial/by-id/usb-Anchor_rampon_anchor_static-if00
-
-[printer]
-kinematics: none
-max_velocity: 100
-max_accel: 100
-```
-
-Simply launch `klippy` from the `Klipper` directory, pointing at the config file:
-```
-% python klippy/klippy.py /path/to/config.cfg
-```
+After the update completes, the device should be available as:
+`/dev/serial/by-id/usb-Anchor_rampon_anchor_static-if00`.
