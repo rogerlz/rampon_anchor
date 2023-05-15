@@ -2,6 +2,12 @@
 #![no_main]
 #![allow(dead_code, non_camel_case_types, non_upper_case_globals)]
 
+#[cfg(not(any(feature = "kusba", feature = "fpis")))]
+compile_error!("One of `kusba` or `fpis` must be enabled.");
+
+#[cfg(all(feature = "kusba", feature = "fpis"))]
+compile_error!("Only one of `kusba` or `fpis` can be enabled.");
+
 mod adxl345;
 mod clock;
 mod commands;
@@ -20,27 +26,28 @@ use cortex_m::interrupt::free;
 use embedded_hal::spi::MODE_3;
 
 use rp2040_hal::{
-    gpio::{bank0::Gpio1, FunctionSpi, Output, Pin, Pins, PushPull},
-    spi::{Enabled, Spi}, Clock,
+    gpio::{FunctionSpi, Pins},
+    spi::Spi,
+    Clock,
 };
 
 use usb_device::{class_prelude::UsbBusAllocator, prelude::*};
 use usbd_serial::{CdcAcmClass, USB_CLASS_CDC};
 
-use crate::pac::SPI0;
-
 use anchor::*;
 use usb::*;
 
-pub struct State {
-    clock: clock::Clock,
-    config_crc: Option<u32>,
-    adxl: adxl345::Adxl<Spi<Enabled, SPI0, 8>, Pin<Gpio1, Output<PushPull>>>,
-}
+#[cfg(feature = "kusba")]
+mod kusba;
 
-impl State {
-    fn poll(&mut self) {}
-}
+#[cfg(feature = "fpis")]
+mod fpis;
+
+#[cfg(feature = "kusba")]
+use kusba::State;
+
+#[cfg(feature = "fpis")]
+use fpis::State;
 
 #[entry]
 fn main() -> ! {
@@ -92,17 +99,39 @@ fn main() -> ! {
     let mut packet_writer = UsbPacketWriter::default();
 
     // SPI
-    let _spi_sclk = pins.gpio2.into_mode::<FunctionSpi>();
-    let _spi_mosi = pins.gpio3.into_mode::<FunctionSpi>();
-    let _spi_miso = pins.gpio0.into_mode::<FunctionSpi>();
-    let spi_cs = pins.gpio1.into_push_pull_output();
+    #[cfg(feature = "kusba")]
+    let (spi, spi_cs) = {
+        let _sclk = pins.gpio2.into_mode::<FunctionSpi>();
+        let _mosi = pins.gpio3.into_mode::<FunctionSpi>();
+        let _miso = pins.gpio0.into_mode::<FunctionSpi>();
+        let cs = pins.gpio1.into_push_pull_output();
 
-    let spi = Spi::<_, _, 8>::new(pac.SPI0).init(
-        &mut pac.RESETS,
-        clocks.peripheral_clock.freq(),
-        8.MHz(),
-        &MODE_3,
-    );
+        let spi = Spi::<_, _, 8>::new(pac.SPI0).init(
+            &mut pac.RESETS,
+            clocks.peripheral_clock.freq(),
+            8.MHz(),
+            &MODE_3,
+        );
+
+        (spi, cs)
+    };
+
+    #[cfg(feature = "fpis")]
+    let (spi, spi_cs) = {
+        let _sclk = pins.gpio10.into_mode::<FunctionSpi>();
+        let _mosi = pins.gpio11.into_mode::<FunctionSpi>();
+        let _miso = pins.gpio12.into_mode::<FunctionSpi>();
+        let cs = pins.gpio13.into_push_pull_output();
+
+        let spi = Spi::<_, _, 8>::new(pac.SPI1).init(
+            &mut pac.RESETS,
+            clocks.peripheral_clock.freq(),
+            8.MHz(),
+            &MODE_3,
+        );
+
+        (spi, cs)
+    };
 
     let adxl = adxl345::Adxl::init(spi, spi_cs);
 
@@ -152,6 +181,7 @@ const STATS_SUMSQ_BASE: u32 = 256;
 klipper_enumeration!(
     enum spi_bus {
         spi0,
+        spi1,
     }
 );
 
