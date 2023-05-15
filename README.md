@@ -114,3 +114,5 @@ Rampon uses code from [Annex Engineering]'s [crampon_anchor] and
 [crampon_anchor]: https://github.com/Annex-Engineering/crampon_anchor
 [Anchor]: https://github.com/Annex-Engineering/anchor
 [rp2040_demo]: https://github.com/Annex-Engineering/anchor/tree/master/rp2040_demo
+
+Also thanks to [Clee](https://github.com/clee) for always offering help to test.
