@@ -1,12 +1,11 @@
 [package]
 name = "rampon_anchor"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+authors = ["Rogerio Goncalves <rogerlz@gmail.com>"]
 
 [dependencies]
-anchor = { git = "ssh://git@github.com/Annex-engineering/anchor.git" }
+anchor = { git = "https://github.com/Annex-engineering/anchor" }
 rp2040-hal = "0.8.0"
 rp-pico = "0.7.0"
 panic-halt = "*"
@@ -18,7 +17,7 @@ usbd-serial = "0.1.1"
 fugit = "*"
 
 [build-dependencies]
-anchor_codegen = { git = "ssh://git@github.com/Annex-engineering/anchor.git" }
+anchor_codegen = { git = "https://github.com/Annex-engineering/anchor" }
 
 [profile.dev]
 codegen-units = 1
@@ -36,3 +35,8 @@ incremental = false
 lto = 'fat'
 opt-level = 3
 overflow-checks = false
+
+[features]
+default = ["kusba"]
+kusba = []
+fpis = []
