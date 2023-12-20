@@ -2,11 +2,11 @@
 #![no_main]
 #![allow(dead_code, non_camel_case_types, non_upper_case_globals)]
 
-#[cfg(not(any(feature = "kusba", feature = "fpis")))]
-compile_error!("One of `kusba` or `fpis` must be enabled.");
+#[cfg(not(any(feature = "kusba", feature = "fpis", feature = "mnadxl")))]
+compile_error!("One of `kusba` or `fpis` or `mnadxl` must be enabled.");
 
-#[cfg(all(feature = "kusba", feature = "fpis"))]
-compile_error!("Only one of `kusba` or `fpis` can be enabled.");
+#[cfg(all(feature = "kusba", feature = "fpis", feature = "mnadxl"))]
+compile_error!("Only one of `kusba` or `fpis` or `mnadxl` can be enabled.");
 
 mod adxl345;
 mod clock;
@@ -43,11 +43,17 @@ mod kusba;
 #[cfg(feature = "fpis")]
 mod fpis;
 
+#[cfg(feature = "mnadxl")]
+mod mnadxl;
+
 #[cfg(feature = "kusba")]
 use kusba::State;
 
 #[cfg(feature = "fpis")]
 use fpis::State;
+
+#[cfg(feature = "mnadxl")]
+use mnadxl::State;
 
 #[entry]
 fn main() -> ! {
@@ -122,6 +128,23 @@ fn main() -> ! {
         let _mosi = pins.gpio11.into_mode::<FunctionSpi>();
         let _miso = pins.gpio12.into_mode::<FunctionSpi>();
         let cs = pins.gpio13.into_push_pull_output();
+
+        let spi = Spi::<_, _, 8>::new(pac.SPI1).init(
+            &mut pac.RESETS,
+            clocks.peripheral_clock.freq(),
+            8.MHz(),
+            &MODE_3,
+        );
+
+        (spi, cs)
+    };
+
+    #[cfg(feature = "mnadxl")]
+    let (spi, spi_cs) = {
+        let _sclk = pins.gpio10.into_mode::<FunctionSpi>();
+        let _mosi = pins.gpio11.into_mode::<FunctionSpi>();
+        let _miso = pins.gpio12.into_mode::<FunctionSpi>();
+        let cs = pins.gpio9.into_push_pull_output();
 
         let spi = Spi::<_, _, 8>::new(pac.SPI1).init(
             &mut pac.RESETS,

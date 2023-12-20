@@ -2,7 +2,8 @@
 
 Rampon is an alternative firmware that you can flash on various devices including the
 [KUSBA V2], [FYSETC PortableInputShaper][PIS], [SeeedStudio Xiao][xiao],
-[Adafruit QT Py][qtpy], or any Pico or RP2040 with an ADXL345 attached.
+[Adafruit QT Py][qtpy], [Mellow Nozzle ADXL][MNADXL], or any Pico or RP2040 with an
+ADXL345 attached.
 
 You can use Rampon to run input shaper calibration for Klipper with any of these devices.
 However, there are two different versions of Rampon available depending on which device you are using.
@@ -11,7 +12,10 @@ However, there are two different versions of Rampon available depending on which
 version of Rampon.
 
  - If you are using the FYSETC PortableInputShaper or any other device wired
-to SPI1, you need to use the `fpis` version of Rampon.
+to SPI1 and CS to gpio13, you need to use the `fpis` version of Rampon.
+
+ - If you are using the Mellow Nozzle ADXL or any other device wired
+to SPI1 and CS to gpio9, you need to use the `mnadxl` version of Rampon.
 
 They are available as separate binaries.
 
@@ -22,6 +26,9 @@ specific GPIO pins depending on which version of Rampon you are using.
   be wired to GPIO0, GPIO1, GPIO2, and GPIO3.
 
   - If you are using the `fpis` version of Rampon for SPI1, the ADXL345 needs to
+  be wired to GPIO10, GPIO11, GPIO12, and GPIO13.
+
+  - If you are using the `mnadxl` version of Rampon for SPI1, the ADXL345 needs to
   be wired to GPIO10, GPIO11, GPIO12, and GPIO13.
 
 If you have wired the ADXL345 differently or have wired a second ADXL345 to your RP2040,
@@ -92,6 +99,7 @@ After the update completes, the device should be available as:
 
  - kusba
  - fpis
+ - mnadxl
 
 ## Release
 
@@ -108,6 +116,7 @@ Rampon uses code from [Annex Engineering]'s [crampon_anchor] and
 
 [KUSBA V2]: https://github.com/xbst/KUSBA
 [PIS]: https://github.com/FYSETC/FYSETC-PortableInputShaper
+[MNADXL]: https://github.com/Mellow-3D/USB-Accelerometer
 [xiao]: https://wiki.seeedstudio.com/XIAO-RP2040/
 [qtpy]: https://learn.adafruit.com/adafruit-qt-py-2040
 [Annex Engineering]: https://github.com/Annex-Engineering

@@ -40,3 +40,4 @@ overflow-checks = false
 default = ["kusba"]
 kusba = []
 fpis = []
+mnadxl = []
