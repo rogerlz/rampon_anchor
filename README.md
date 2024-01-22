@@ -8,27 +8,27 @@ ADXL345 attached.
 You can use Rampon to run input shaper calibration for Klipper with any of these devices.
 However, there are two different versions of Rampon available depending on which device you are using.
 
- - If you are using the KUSBA V2 or any other device wired to SPI0, you can use the `kusba`
-version of Rampon.
+- If you are using the KUSBA V2 or any other device wired to SPI0, you can use the `kusba`
+  version of Rampon.
 
- - If you are using the FYSETC PortableInputShaper or any other device wired
-to SPI1 and CS to gpio13, you need to use the `fpis` version of Rampon.
+- If you are using the FYSETC PortableInputShaper or any other device wired
+  to SPI1 and CS to gpio13, you need to use the `fpis` version of Rampon.
 
- - If you are using the Mellow Nozzle ADXL or any other device wired
-to SPI1 and CS to gpio9, you need to use the `mnadxl` version of Rampon.
+- If you are using the Mellow Nozzle ADXL or any other device wired
+  to SPI1 and CS to gpio9, you need to use the `mnadxl` version of Rampon.
 
 They are available as separate binaries.
 
 It's important to note that the current version of Rampon requires the ADXL345 to be wired to
 specific GPIO pins depending on which version of Rampon you are using.
 
-  - If you are using the `kusba` version of Rampon for SPI0, the ADXL345 needs to
+- If you are using the `kusba` version of Rampon for SPI0, the ADXL345 needs to
   be wired to GPIO0, GPIO1, GPIO2, and GPIO3.
 
-  - If you are using the `fpis` version of Rampon for SPI1, the ADXL345 needs to
+- If you are using the `fpis` version of Rampon for SPI1, the ADXL345 needs to
   be wired to GPIO10, GPIO11, GPIO12, and GPIO13.
 
-  - If you are using the `mnadxl` version of Rampon for SPI1, the ADXL345 needs to
+- If you are using the `mnadxl` version of Rampon for SPI1, the ADXL345 needs to
   be wired to GPIO10, GPIO11, GPIO12, and GPIO13.
 
 If you have wired the ADXL345 differently or have wired a second ADXL345 to your RP2040,
@@ -40,7 +40,7 @@ of the input shaper. However, the LED functionality has not been implemented in 
 ## Loading Release Builds
 
 1. Download the UF2 files from the release assets, choosing the correct version depending
-the device you have.
+   the device you have.
 2. Hold the BOOT or BOOTSEL button on the PCB while connecting USB cable
 3. Mount the USB storage device if necessary
 4. Copy the UF2 file manually or run:
@@ -97,9 +97,9 @@ After the update completes, the device should be available as:
 
 ## Available Rust Features
 
- - kusba
- - fpis
- - mnadxl
+- kusba
+- fpis
+- mnadxl
 
 ## Release
 
@@ -124,4 +124,8 @@ Rampon uses code from [Annex Engineering]'s [crampon_anchor] and
 [Anchor]: https://github.com/Annex-Engineering/anchor
 [rp2040_demo]: https://github.com/Annex-Engineering/anchor/tree/master/rp2040_demo
 
-Also thanks to [Clee](https://github.com/clee) for always offering help to test.
+Also thanks to:
+
+- [Clee](https://github.com/clee) for always offering help to test.
+- [mattthebaker](https://github.com/mattthebaker)
+- [xbst](https://github.com/xbst)
