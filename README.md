@@ -37,6 +37,12 @@ the current version of Rampon might not work for you.
 Note: The FYSETC PortableInputShaper has an LED that can be used to indicate the status
 of the input shaper. However, the LED functionality has not been implemented in Rampon yet.
 
+Due to recent flash chip shortages some KUSBA batches were built with an ISSI IS25LP016D 
+flash chip instead of Winbond W25Q16JVSNIQ. For these boards, use the `is25lp` variant: 
+`rampon_anchor_kusba_is25lp.uf2`
+To tell which chip your board has, look at the marking on the big 8-pin chip on your KUSBA.
+ISSI parts are marked with a white dot, and the chip has `IS25LP016` on it, not `W25Q16JVNIQ`.
+
 ## Loading Release Builds
 
 1. Download the UF2 files from the release assets, choosing the correct version depending
@@ -100,6 +106,7 @@ After the update completes, the device should be available as:
 - kusba
 - fpis
 - mnadxl
+- is25lp (combine with a board: `--features kusba,is25lp`)
 
 ## Release
 

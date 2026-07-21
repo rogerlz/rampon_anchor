@@ -37,6 +37,18 @@ use usbd_serial::{CdcAcmClass, USB_CLASS_CDC};
 use anchor::*;
 use usb::*;
 
+#[cfg(not(feature = "is25lp"))]
+#[link_section = ".boot2"]
+#[no_mangle]
+#[used]
+pub static BOOT2_FIRMWARE: [u8; 256] = rp2040_boot2::BOOT_LOADER_W25Q080;
+
+#[cfg(feature = "is25lp")]
+#[link_section = ".boot2"]
+#[no_mangle]
+#[used]
+pub static BOOT2_FIRMWARE: [u8; 256] = rp2040_boot2::BOOT_LOADER_IS25LP080;
+
 #[cfg(feature = "kusba")]
 mod kusba;
 

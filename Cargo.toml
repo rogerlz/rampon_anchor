@@ -7,14 +7,15 @@ authors = ["Rogerio Goncalves <rogerlz@gmail.com>"]
 [dependencies]
 anchor = { git = "https://github.com/Annex-engineering/anchor" }
 rp2040-hal = "0.8.0"
-rp-pico = "0.7.0"
+rp-pico = { version = "0.7.0", default-features = false, features = ["rt", "critical-section-impl", "rom-func-cache"] }
+rp2040-boot2 = "=0.2.1"
 panic-halt = "*"
 cortex-m-rt = "0.7.3"
 cortex-m = "0.7.7"
 embedded-hal = "0.2.7"
 usb-device = "0.2.9"
 usbd-serial = "0.1.1"
-fugit = "*"
+fugit = "0.3"
 
 [build-dependencies]
 anchor_codegen = { git = "https://github.com/Annex-engineering/anchor" }
@@ -41,3 +42,4 @@ default = ["kusba"]
 kusba = []
 fpis = []
 mnadxl = []
+is25lp = []
